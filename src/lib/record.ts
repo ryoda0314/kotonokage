@@ -49,6 +49,54 @@ export function bounded(s: State): State {
   return { ...s, talks, chunks, replies: s.replies.slice(-REPLIES_KEPT) };
 }
 
+function union<T>(a: T[], b: T[], key: (x: T) => string): T[] {
+  const all = new Map<string, T>();
+  for (const x of [...a, ...b]) all.set(key(x), x);
+  return [...all.values()];
+}
+
+const byAt = <T extends { at: number }>(xs: T[]) => xs.sort((x, y) => x.at - y.at);
+
+/**
+ * Two copies of the record made one (this device's and the account's, or two devices'), as in the sisters: nothing
+ * either has is lost. Rounds, tries, events and replies are joined (one of each moment); a talk keeps its earliest
+ * start, listening and finishing, and the step of whichever copy touched it last. `a` is this device's: its talk on
+ * 追いかける stays.
+ */
+export function mergeStates(a: State, b: State): State {
+  const talks: Record<string, TalkLog> = {};
+  for (const id of new Set([...Object.keys(a.talks), ...Object.keys(b.talks)])) {
+    const x = a.talks[id];
+    const y = b.talks[id];
+    if (!x || !y) {
+      talks[id] = (x ?? y)!;
+      continue;
+    }
+    const min = (p?: number, q?: number) => (p === undefined ? q : q === undefined ? p : Math.min(p, q));
+    talks[id] = {
+      first: Math.min(x.first, y.first),
+      last: Math.max(x.last, y.last),
+      step: x.last >= y.last ? x.step : y.step,
+      listened: min(x.listened, y.listened),
+      done: min(x.done, y.done),
+      rounds: byAt(union(x.rounds, y.rounds, (r) => `${r.at}:${r.only ?? ""}`)),
+      roles: byAt(union(x.roles, y.roles, (r) => `${r.at}:${r.as}`)),
+    };
+    if (talks[id].listened === undefined) delete talks[id].listened;
+    if (talks[id].done === undefined) delete talks[id].done;
+  }
+  const chunks: Record<string, ChunkEvent[]> = {};
+  for (const id of new Set([...Object.keys(a.chunks), ...Object.keys(b.chunks)]))
+    chunks[id] = byAt(union(a.chunks[id] ?? [], b.chunks[id] ?? [], (e) => `${e.at}:${e.kind}:${e.talk}`));
+  return bounded({
+    v: 1,
+    current: a.current ?? b.current,
+    talks,
+    chunks,
+    replies: byAt(union(a.replies, b.replies, (r) => `${r.at}:${r.talk}`)),
+  });
+}
+
 /** A day in Japan, as "YYYY-MM-DD". */
 export function dayOf(at: number): string {
   return new Date(at + 9 * 3600_000).toISOString().slice(0, 10);

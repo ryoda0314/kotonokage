@@ -1,4 +1,5 @@
 .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.linked { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
 .toggle { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer; }
 .toggle input { width: 20px; height: 20px; accent-color: var(--accent); }
 .danger {

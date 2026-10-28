@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { TALKS } from "../src/content/index.ts";
-import { addReply, addRound, caughtLines, emptyState, finish, grownChunks, levelOf, listened, metBefore, pickNext } from "../src/lib/record.ts";
+import { addReply, addRound, caughtLines, emptyState, finish, grownChunks, levelOf, listened, mergeStates, metBefore, pickNext } from "../src/lib/record.ts";
 
 const DAY = 24 * 3600_000;
 const T0 = Date.UTC(2026, 9, 28, 3);
@@ -37,6 +37,26 @@ test("rounds followed without a voice judge nothing", () => {
   assert.equal(levelOf(s, "no-rush"), null);
   s = addRound(s, "ramen", { at: T0 + 1, speed: "1", missed: {} });
   assert.equal(levelOf(s, "no-rush"), "shadowed");
+});
+
+test("two devices' records merge without losing anything, and merging again changes nothing", () => {
+  let phone = emptyState();
+  phone = listened(phone, "weekend", T0);
+  phone = addRound(phone, "weekend", { at: T0 + 10, speed: "1", missed: { "weekend.4": [3] } });
+  let laptop = emptyState();
+  laptop = listened(laptop, "weekend", T0 + 5);
+  laptop = addRound(laptop, "weekend", { at: T0 + 20, speed: "1", missed: {} });
+  laptop = addReply(laptop, { at: T0 + 30, talk: "ramen", said: "x", fixed: "x", natural: true, reply: "y", own: ["can-we"], ai: [] });
+  const merged = mergeStates(phone, laptop);
+  assert.equal(merged.talks.weekend.listened, T0);
+  assert.deepEqual(
+    merged.talks.weekend.rounds.map((r) => r.at),
+    [T0 + 10, T0 + 20],
+  );
+  assert.equal(merged.replies.length, 1);
+  assert.equal(levelOf(merged, "can-we"), "own");
+  assert.deepEqual(mergeStates(merged, laptop), merged);
+  assert.deepEqual(mergeStates(merged, merged), merged);
 });
 
 test("a chunk the correction put in, used later on one's own, has grown", () => {

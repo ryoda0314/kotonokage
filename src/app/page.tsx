@@ -58,6 +58,9 @@ export default function Home() {
           {t.start}
         </Link>
         <p className={styles.note}>{t.note}</p>
+        <Link href="/login?next=/app" className={styles.link}>
+          {t.link}
+        </Link>
       </section>
     </div>
   );

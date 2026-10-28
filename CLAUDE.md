@@ -12,8 +12,17 @@ no speed numbers, no streaks, no badges, no forced review, no pronunciation less
 - Next.js 16 (App Router, Turbopack), React 19, plain CSS modules: the sisters' versions. `npm run dev` serves on
   port 3240.
 - The learner's record (`State`, `src/lib/record.ts`) is on their device (`src/lib/store.ts`, localStorage key
-  `shadowing:v1`, every access guarded). Signing in with ことのあめ's account (and a copy in its Supabase under this
-  app's own table prefix) is not built yet; `onSave` is where that copy would follow.
+  `shadowing:v1`, every access guarded); signing in is optional. With a ことのあめ account (the same Supabase project,
+  so the same accounts) it is also kept in `sh_records`, one row per account (`supabase/migrations/`, RLS: only their
+  own row; applied 2026-10-28 and checked as anon), read and written from the browser as the learner with the anon key
+  (`src/lib/sync.ts`, as ことのは's). The two copies are merged, never overwritten (`mergeStates`). Everything of this
+  app's in that project is prefixed `sh_` (named for what it trains, not the app); never touch `pl_`, `en_`, `kn_`,
+  `hg_`, `ke_` or the old app's tables, and do not create test users there (a trigger of the old app fires on
+  `auth.users`).
+- `/login`: email and password of a ことのあめ account. ことのあめでつなぐ (`src/lib/connect.ts`, APP `kotonokage`) is
+  built but hidden until `NEXT_PUBLIC_KOTONOAME_CONNECT=1`: ことのあめ sends its one-time token only to the sisters in
+  its `src/lib/sisters.ts`, so it needs `kotonokage` there (with this app's public address) and deployed first. Google
+  shows only with `NEXT_PUBLIC_GOOGLE_CLIENT_ID` and this app's origin among that client's authorized origins.
 - The prepared English is TypeScript data in `src/content/` (checked by `tests/content.test.mjs`); its audio is static
   MP3 in `public/audio`, named by key and a hash of voicing, voice, pace and text, listed with each clip's length and
   each subtitle word's time in `src/content/audio.json`.
@@ -89,6 +98,8 @@ no speed numbers, no streaks, no badges, no forced review, no pronunciation less
 - `npx tsc --noEmit` (run `npx next typegen` first after adding routes)
 - `node --env-file=.env.local scripts/generate-audio.mjs [--dry-run] [--only <key>]`
 - `python design/make-icons.py`: the stand-in icon (a wave and its shadow) until the maker chooses a picture.
+- `node --env-file=../kotono/polylinga/.env.local ../kotono/polylinga/scripts/migrate.mjs supabase/migrations/<file>.sql`:
+  apply one migration to ことのあめ's database, in a transaction (ことのあめ's runner and connection settings).
 
 ## Conventions
 

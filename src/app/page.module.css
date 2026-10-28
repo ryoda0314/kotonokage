@@ -23,6 +23,7 @@
 
 .start { align-self: flex-start; margin-top: 12px; min-width: 200px; }
 .note { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.7; }
+.link { align-self: flex-start; font-size: 14px; color: var(--accent); text-underline-offset: 0.25em; }
 
 @media (min-width: 720px) {
   .page { padding-top: 72px; }
