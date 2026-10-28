@@ -1,0 +1,30 @@
+/* 自分: one quiet row of the learner's own counts, then one view at a time. */
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 18px 0 8px; }
+.stats > div { display: flex; flex-direction: column-reverse; gap: 2px; }
+.stats dt { font-size: 12px; color: var(--muted); }
+.stats dd { margin: 0; font-family: var(--font-en); font-size: 22px; font-weight: 500; }
+
+.tabs { display: flex; gap: 6px; margin: 18px 0 4px; border-bottom: 1px solid var(--line); }
+.tab {
+  min-height: 42px; padding: 0 14px; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  background: none; color: var(--muted); font-size: 14.5px; cursor: pointer;
+}
+.tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+.list { list-style: none; margin: 12px 0 0; padding: 0; }
+.item { padding: 12px 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
+.item:last-child { border-bottom: 1px solid var(--line); }
+.when { margin: 0; font-size: 12.5px; color: var(--muted); }
+.what { margin: 0; font-size: 14.5px; }
+.en { margin: 2px 0 0; font-size: 16.5px; line-height: 1.6; color: var(--ink); }
+.sub { margin: 0; font-size: 13px; color: var(--muted); }
+
+.count { margin-left: 8px; font-family: var(--font-en); font-weight: 500; color: var(--muted); font-size: 13px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; flex-direction: column; align-items: flex-start; padding: 8px 12px;
+  border: 1px solid var(--line-2); border-radius: 10px; background: var(--paper); color: var(--ink);
+  font-size: 14.5px; text-align: left; cursor: pointer;
+}
+.chip:hover { border-color: var(--accent); }
+.chipLabel { font-size: 12px; color: var(--muted); }

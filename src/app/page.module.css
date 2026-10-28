@@ -1,0 +1,30 @@
+.page { max-width: 640px; margin: 0 auto; padding: 40px 20px 64px; display: flex; flex-direction: column; gap: 36px; }
+.header { padding-top: 8px; }
+.hero { display: flex; flex-direction: column; gap: 20px; }
+.lead { margin: 0; font-size: 26px; font-weight: 600; line-height: 1.45; letter-spacing: -0.01em; word-break: auto-phrase; }
+
+/* The model's line, and the learner's a little behind it: the 影 of the name. */
+.figure { margin: 4px 0 8px; padding: 18px 0 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
+.tag { margin: 0; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.mineTag { margin-top: 10px; padding-left: 1.6em; }
+.model { margin: 0; font-size: 19px; line-height: 1.6; }
+.mine { margin: 0; padding-left: 1.6em; font-size: 19px; line-height: 1.6; color: var(--accent); animation: follow 1.1s 0.5s cubic-bezier(0.2, 0.8, 0.3, 1) both; }
+.missed { color: var(--faint); opacity: 0.55; }
+@keyframes follow { from { opacity: 0; transform: translateX(-1.6em); } }
+
+.body { margin: 0; font-size: 16px; line-height: 1.85; color: var(--ink-2); }
+
+.steps { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 0; }
+.step { display: grid; grid-template-columns: 28px 6.5em 1fr; align-items: baseline; gap: 8px; padding: 12px 0; border-top: 1px solid var(--line); }
+.step:last-child { border-bottom: 1px solid var(--line); }
+.stepNumber { font-family: var(--font-en); font-size: 13px; color: var(--muted); }
+.stepTitle { font-weight: 600; }
+.stepBody { font-size: 14.5px; line-height: 1.7; color: var(--ink-2); }
+
+.start { align-self: flex-start; margin-top: 12px; min-width: 200px; }
+.note { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+@media (min-width: 720px) {
+  .page { padding-top: 72px; }
+  .lead { font-size: 32px; }
+}

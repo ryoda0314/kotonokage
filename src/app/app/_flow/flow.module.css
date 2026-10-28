@@ -1,0 +1,122 @@
+/* 聞く → 気づく → 追いかける → 返す: the sisters' paper, ink, one accent and hairlines. */
+.head { display: flex; flex-direction: column; gap: 10px; padding: 18px 0 6px; }
+.situation { margin: 0; font-size: 16px; line-height: 1.7; color: var(--ink-2); }
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-top: 4px; }
+.status { font-size: 14px; color: var(--muted); }
+.error { margin: 0; font-size: 14px; line-height: 1.7; color: var(--danger); }
+.small { margin: 0; font-size: 13px; line-height: 1.7; color: var(--muted); }
+.after { margin: 8px 0 0; font-size: 15px; line-height: 1.8; color: var(--ink-2); }
+.whither { font-weight: 500; opacity: 0.85; }
+
+/* The lines: they fall in from above and pile up, as in ことのあめ. The one playing is marked at its left. */
+.lines { list-style: none; margin: 0; padding: 12px 0 8px; display: flex; flex-direction: column; gap: 4px; }
+.line {
+  position: relative;
+  padding: 8px 0 12px 14px;
+  border-bottom: 1px solid var(--line);
+  animation: fall 0.55s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+.line:last-child { border-bottom: 0; }
+.still { animation: none; }
+.line::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 14px;
+  width: 3px;
+  border-radius: 2px;
+  background: transparent;
+  transition: background 0.25s ease;
+}
+.line[data-now]::before { background: var(--accent); }
+@keyframes fall { from { opacity: 0; transform: translateY(-18px); } }
+
+.lineHead { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; }
+.who { margin: 0; display: flex; align-items: baseline; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.whoName { letter-spacing: 0.02em; }
+.you { font-size: 12px; font-weight: 600; color: var(--accent); padding: 1px 8px; border-radius: 999px; background: var(--tint); }
+.ja { margin: 2px 0 0; font-size: 14px; line-height: 1.7; color: var(--muted); }
+.lineHeard { font-size: 12px; color: var(--muted); }
+.lineMissed { display: none; }
+.lineActions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-top: 6px; }
+.small2, .small2Strong {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 12px;
+  border: 1px solid var(--line-2); border-radius: 999px; background: var(--paper); color: var(--ink);
+  font-size: 13px; cursor: pointer;
+}
+.small2:hover, .small2Strong:hover { border-color: var(--accent); color: var(--accent); }
+.small2Strong { border-color: var(--accent); color: var(--accent); }
+.small2:disabled, .small2Strong:disabled { color: var(--faint); border-color: var(--line); cursor: default; }
+
+.heardAs { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+.heardAs summary { cursor: pointer; }
+.heardAs p { margin: 6px 0 0; font-size: 15px; line-height: 1.7; color: var(--ink-2); }
+
+/* 気づく: this talk's chunks. */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; flex-direction: column; align-items: flex-start; gap: 0; padding: 8px 12px;
+  border: 1px solid var(--line-2); border-radius: 10px; background: var(--paper); color: var(--ink);
+  font-size: 14.5px; text-align: left; cursor: pointer;
+}
+.chip:hover { border-color: var(--accent); }
+.chipLabel { font-size: 12px; color: var(--muted); }
+.chipAgain { border-color: var(--again); background: var(--again-tint); }
+.chipAgain .t-en, .chipAgain > span:first-child { color: var(--again); }
+
+/* 追いかける: which time through, and how it is set. Dots, not a score: five is where it pauses. */
+.roundBar { display: flex; align-items: center; gap: 12px; }
+.roundNo { font-size: 15px; font-weight: 600; }
+.dots { display: inline-flex; gap: 6px; }
+.dot, .dotDone { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--line-2); }
+.dotDone { border-color: var(--accent); background: var(--accent); }
+.settingsRow { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.segmented { display: inline-flex; align-items: center; gap: 4px; }
+.segLabel { font-size: 12.5px; color: var(--muted); margin-right: 4px; }
+.seg {
+  min-height: 34px; padding: 0 11px; border: 1px solid var(--line-2); border-radius: 999px;
+  background: var(--paper); color: var(--ink-2); font-size: 13px; cursor: pointer;
+}
+.seg[aria-pressed="true"] { border-color: var(--accent); background: var(--tint); color: var(--accent); font-weight: 600; }
+.seg:disabled { cursor: default; opacity: 0.6; }
+
+/* While recording: the button's outline grows with the learner's voice (an outline, not a shadow). */
+.recording { outline: calc(2px + var(--level, 0) * 10px) solid var(--tint); outline-offset: 0; transition: outline-width 0.08s linear; }
+
+/* 返す（自分で） */
+.card { display: flex; flex-direction: column; gap: 4px; padding: 10px 16px 14px; border: 1px solid var(--line-2); border-radius: var(--radius); }
+.mine { margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--line); }
+.mineLabel { margin: 0; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.mineText { margin: 2px 0 0; font-size: 15px; line-height: 1.75; }
+
+.turn { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.fix { display: flex; flex-direction: column; gap: 4px; }
+.fixLabel { margin: 6px 0 0; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.said { margin: 0; font-size: 15.5px; line-height: 1.7; color: var(--ink-2); }
+.fixed { margin: 0; font-size: 18px; line-height: 1.7; color: var(--ink); }
+.missedWord { color: var(--faint); text-decoration: underline dotted var(--line-2); text-decoration-thickness: 2px; text-underline-offset: 0.32em; }
+.followed { padding: 4px 0 0; }
+.why { font-size: 13.5px; color: var(--muted); }
+.why summary { cursor: pointer; }
+.why ul, .gaps ul { margin: 6px 0 0; padding-left: 1.2em; line-height: 1.8; color: var(--ink-2); }
+.gaps li { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.reply { padding: 4px 0 0 14px; border-left: 3px solid var(--line); }
+.replyText { margin: 0; font-size: 17px; line-height: 1.7; }
+
+.composer { display: flex; flex-direction: column; gap: 10px; padding-top: 6px; }
+.field {
+  width: 100%; min-height: 84px; padding: 12px 14px; resize: vertical;
+  border: 1px solid var(--line-2); border-radius: var(--radius); background: var(--paper);
+  font-family: var(--font-ui); font-size: 16px; line-height: 1.6;
+}
+.field:focus { outline: none; border-color: var(--accent); }
+
+.sample { display: flex; flex-direction: column; gap: 2px; padding: 10px 0; border-top: 1px solid var(--line); }
+.sampleNote { margin: 0; font-size: 13px; color: var(--muted); }
+.sampleText { margin: 0; font-size: 17px; line-height: 1.7; }
+
+@media (prefers-reduced-motion: reduce) {
+  .line { animation: none; }
+  .recording { transition: none; }
+}
