@@ -26,10 +26,12 @@ no speed numbers, no streaks, no badges, no forced review, no pronunciation less
 - The prepared English is TypeScript data in `src/content/` (checked by `tests/content.test.mjs`); its audio is static
   MP3 in `public/audio`, named by key and a hash of voicing, voice, pace and text, listed with each clip's length and
   each subtitle word's time in `src/content/audio.json`.
-- Voices (`src/content/cast.ts`, `src/lib/tts.ts`, as ことのは): Mia and Sam in OpenAI's voices, Leo and Nora in
-  Google's (`google:Puck`, `google:Kore`, Gemini 3.1 Flash TTS on Vertex, ことのあめ's project). わたしの声 (the
-  learner's corrected answers and the samples) is OpenAI `coral` or `verse`, chosen in 設定. Both providers' PCM is
-  tidied the same way (`src/lib/pcm.ts`).
+- Voices (`src/content/cast.ts`, `src/lib/tts.ts`): every voice is Gemini's (Gemini 3.1 Flash TTS on Vertex,
+  ことのあめ's project): Mia `Aoede`, Leo `Puck`, Sam `Umbriel`, Nora `Kore`; わたしの声 (the learner's corrected
+  answers and the samples) `Leda` or `Achird`, chosen in 設定. The maker found OpenAI's voices too mechanical
+  (2026-10-28), so each keeps an OpenAI voice only as `fallback`, heard when Google refuses a reply the AI wrote;
+  prepared clips never fall back. The PCM is tidied before anyone hears it (`src/lib/pcm.ts`). In ことのは the same
+  Mia and Sam still speak in OpenAI's voices.
 - AI is OpenAI, server-side only, limited per address and per server instance (`src/lib/limits.ts`):
   - `/api/hear`: the machine's ear (gpt-4o-transcribe). Never given the line, or it writes words the learner did not
     say. Up to 90 s of 16 kHz WAV (a whole talk followed once). The recording is not kept.
