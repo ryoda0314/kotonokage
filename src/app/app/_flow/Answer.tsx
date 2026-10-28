@@ -19,6 +19,7 @@ import { heardWords, wordsIn, wordsOf } from "@/lib/text";
 import page from "../_parts/page.module.css";
 import styles from "./flow.module.css";
 import { LineText } from "./LineText";
+import { Scene } from "./Scene";
 import { hearErrorOf, loud, micErrorOf, missedOf, wait } from "./sound";
 import { Who } from "./Who";
 
@@ -352,6 +353,7 @@ function Own({ talk }: { talk: Talk }) {
       <p className={page.note}>{t.ownLead}</p>
 
       <div className={styles.card}>
+        <Scene talk={talk.id} small />
         <div className={styles.lineHead}>
           <Who who={them} />
           <Speak item={lineItem(line)} label={ja.common.play} size="sm" />

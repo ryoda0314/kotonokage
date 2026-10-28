@@ -73,6 +73,12 @@ no speed numbers, no streaks, no badges, no forced review, no pronunciation less
   finds it in what the learner says), `cast.ts`. Marks name a chunk and its exact words in a line; sounds name words
   heard differently (`as` is what the voice says: the subtitle keeps "want to", the clip says "wanna"). Every chunk is
   in two talks or more; chunks in a line never overlap.
+- Scene photos (CONCEPT.md, デザイン): made by the maker in ChatGPT (`design/scenes/prompts.md`; the four friends'
+  reference is `design/casting.png`, what was actually sent is `design/scenes/prompts-used.md`), kept as
+  `design/scenes/<talk id>.png`. `python design/make-scenes.py` writes `public/scenes/<talk id>.<hash>.webp` (named by
+  content, so a new photo is never hidden behind a cached old one) and `src/content/scenes.json`. Shown by
+  `_flow/Scene.tsx` in 聞く (whole, then a strip at the faces once the talk plays), 返す's card and 会話's list; never
+  in 気づく or 追いかける. No readable text in a photo (it would give the words away before 聞く).
 - After changing lines, samples or voices: `node --env-file=.env.local scripts/generate-audio.mjs` (only new or changed
   clips are voiced, each heard again by whisper-1, made again up to three times when it is not heard as its line or is
   off pace; it lists the ones to listen to), then `npm test`.

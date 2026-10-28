@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import test from "node:test";
 import { allClips, answerRoles, CHUNKS, chunksOf, findChunks, spokenText, TALKS, talksWithChunk } from "../src/content/index.ts";
+import scenes from "../src/content/scenes.json" with { type: "json" };
 
 test("ids are unique and lines are named after their talk", () => {
   const ids = TALKS.flatMap((t) => [t.id, ...t.lines.map((l) => l.id), ...t.answer.samples.map((s) => s.id)]);
@@ -67,6 +69,14 @@ test("返す answers someone's line in the talk, as the other person", () => {
     assert.ok(t.lines.some((l) => l.id === t.answer.line && l.who === them), t.id);
     assert.notEqual(them, me, t.id);
     assert.ok(t.answer.samples.length >= 2, t.id);
+  }
+});
+
+test("scene photos are only for talks that exist, and each file is there (design/make-scenes.py)", () => {
+  const ids = new Set(TALKS.map((t) => t.id));
+  for (const [id, s] of Object.entries(scenes)) {
+    assert.ok(ids.has(id), id);
+    assert.ok(existsSync(`public/scenes/${s.file}`), s.file);
   }
 });
 

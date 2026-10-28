@@ -1,0 +1,25 @@
+/* A talk's scene: a photo the maker made (design/scenes/prompts.md), framed by the sisters' hairline. Made small, it
+   keeps a strip a third of the way down, where the faces are, so the lines below have the room. */
+.scene {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  max-height: 560px;
+  margin: 2px 0 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: max-height 0.5s ease;
+}
+button.scene { cursor: zoom-in; }
+button.scene[aria-expanded="true"] { cursor: zoom-out; }
+.small { max-height: 104px; }
+.img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+
+.thumb { display: block; flex-shrink: 0; width: 64px; height: 43px; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene { transition: none; }
+}

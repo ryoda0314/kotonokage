@@ -8,6 +8,7 @@ import { ja } from "@/lib/i18n/ja";
 import { fullRounds, setCurrent } from "@/lib/record";
 import { commit, useRecord } from "@/lib/store";
 import page from "../_parts/page.module.css";
+import { SceneThumb } from "../_flow/Scene";
 
 const t = ja.talks;
 
@@ -37,10 +38,15 @@ export function TalkList() {
                   router.push("/app");
                 }}
               >
+                <SceneThumb talk={talk.id} />
                 <span className={page.rowMain}>
                   <span className={page.rowTitle}>
                     {talk.title}
-                    {state?.current === talk.id ? <span className={page.met} style={{ marginLeft: 8 }}>{t.now}</span> : null}
+                    {state?.current === talk.id ? (
+                      <span className={page.met} style={{ marginLeft: 8, whiteSpace: "nowrap" }}>
+                        {t.now}
+                      </span>
+                    ) : null}
                   </span>
                   <span className={page.rowSub}>
                     {peopleOf(talk)

@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         source: "/audio/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=2592000, immutable" }],
       },
+      {
+        // A scene photo is named by its talk and a hash of its content (design/make-scenes.py): the same.
+        source: "/scenes/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=2592000, immutable" }],
+      },
     ];
   },
 };

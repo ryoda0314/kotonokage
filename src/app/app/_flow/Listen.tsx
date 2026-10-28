@@ -10,20 +10,26 @@ import { commit } from "@/lib/store";
 import page from "../_parts/page.module.css";
 import styles from "./flow.module.css";
 import { LineText } from "./LineText";
+import { Scene } from "./Scene";
 import { Who } from "./Who";
 
 const t = ja.flow;
 
-/** 聞く: the talk plays through with no subtitle; each line falls in as its shadow while it is said. */
+/**
+ * 聞く: the talk plays through with no subtitle; each line falls in as its shadow while it is said. The scene (where it
+ * happens, who is there) is all there is to go on besides the voices; once the talk plays it steps back to a strip.
+ */
 export function Listen({ talk, state, onNext }: { talk: Talk; state: State; onNext: () => void }) {
   const before = !!state.talks[talk.id]?.listened;
   const [shown, setShown] = useState(before ? talk.lines.length : 0);
   const [playing, setPlaying] = useState(false);
   const [at, setAt] = useState(-1);
+  const [big, setBig] = useState(!before);
   const done = shown >= talk.lines.length;
 
   async function run() {
     unlock();
+    setBig(false);
     setPlaying(true);
     const ok = await playList(
       talk.lines.map((l) => lineItem(l)),
@@ -47,6 +53,7 @@ export function Listen({ talk, state, onNext }: { talk: Talk; state: State; onNe
     <>
       <section className={styles.head}>
         <p className={styles.situation}>{talk.lead}</p>
+        <Scene talk={talk.id} small={!big} onToggle={() => setBig(!big)} label={t.listen.scene} priority />
         <p className={page.note}>{t.listen.lead}</p>
         <div className={styles.controls}>
           <button type="button" className={done && !playing ? "btn-quiet" : "btn"} onClick={() => (playing ? stop() : void run())}>
