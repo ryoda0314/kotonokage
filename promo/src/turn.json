@@ -1,0 +1,50 @@
+{
+ "note": "アプリの /api/turn と同じ頼み方で返ってきた直しと返事（scripts/turn.mjs）。声は /api/say と同じく ../src/lib/tts.ts で。",
+ "at": "2026-10-31",
+ "model": "gpt-5.5 (low)",
+ "input": "I have バイト today... How about Saturday?",
+ "result": {
+  "fixed": "I have work today. How about Saturday?",
+  "natural": false,
+  "notes": [
+   "「バイト」は友だち同士なら “work” が自然です。"
+  ],
+  "gaps": [
+   {
+    "ja": "バイト",
+    "en": "work"
+   }
+  ],
+  "reply": "Saturday works for me. I’m always down for ramen!",
+  "parts": [
+   {
+    "text": "Saturday works for me."
+   },
+   {
+    "text": "I’m always down for ramen!"
+   }
+  ]
+ },
+ "voices": {
+  "fixed": {
+   "src": "turn/fixed.8203cb6b.wav",
+   "text": "I have work today. How about Saturday?",
+   "voice": "google:Leda",
+   "seconds": 2.88
+  },
+  "reply": [
+   {
+    "src": "turn/reply1.c416097e.wav",
+    "text": "Saturday works for me.",
+    "voice": "google:Umbriel",
+    "seconds": 1.416
+   },
+   {
+    "src": "turn/reply2.92b3c00e.wav",
+    "text": "I’m always down for ramen!",
+    "voice": "google:Umbriel",
+    "seconds": 1.944
+   }
+  ]
+ }
+}

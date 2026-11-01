@@ -1,0 +1,30 @@
+{
+  "name": "kotonokage-promo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "ことのかげ のプロモーション映像（Remotion）",
+  "scripts": {
+    "assets": "node scripts/assets.mjs",
+    "follow": "node --env-file=../.env.local scripts/follow.mjs",
+    "turn": "node --env-file=../.env.local scripts/turn.mjs",
+    "voice": "node scripts/voice.mjs --env ../.env.local",
+    "music": "node scripts/marks.mjs | python scripts/music.py public/sound",
+    "studio": "remotion studio src/index.ts",
+    "stills": "node scripts/stills.mjs out/stills",
+    "render": "remotion render src/index.ts Promo out/kotonokage-promo.mp4"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.499",
+    "@remotion/cli": "4.0.499",
+    "@remotion/renderer": "4.0.499",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.499"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "esbuild": "0.28.1",
+    "typescript": "^5"
+  }
+}

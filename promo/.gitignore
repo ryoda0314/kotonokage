@@ -1,0 +1,9 @@
+node_modules/
+out/
+# Copied or made by `npm run assets`, `npm run follow`, `npm run turn`, `npm run music` and `npm run voice`.
+public/app/
+public/fonts/
+public/follow/
+public/sound/
+public/turn/
+public/voice/
