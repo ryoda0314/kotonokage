@@ -27,8 +27,10 @@ no speed numbers, no streaks, no badges, no forced review, no pronunciation less
   `src/lib/usage.ts`, tested in `tests/usage.test.mjs`): this device's number (`kage:device`, a random one made here),
   one count per `open` (once a page load, on reaching `/app`: `_parts/CountOpen.tsx`), `learn` (a talk's first time through the
   whole of 追いかける, `Follow`'s `keepRound`: 聞く → 気づく → 追いかける gone to its end, which opens 返す) and `say` (a
-  返す（自分で） reply come back corrected, `Answer`'s `send`), and whether it was opened from the home screen; nothing
-  else (no account, name, email, voice or sentence). A plain fetch with the anon key to ことのあめ's `pl_app_ping`
+  返す（自分で） reply come back corrected, `Answer`'s `send`), whether it was opened from the home screen, whether a
+  ことのあめ account is signed in here (`p_signed_in`, a yes or no from sync.ts's `account()`, the session kept on the
+  device) and the kind of device (`p_platform`: ios, android, pc or other, `platformOf` in `src/lib/usage.ts`); nothing
+  else (no account id, name, email, token, voice or sentence). A plain fetch with the anon key to ことのあめ's `pl_app_ping`
   (the kotono folder's `../polylinga/supabase/migrations/20261103000000_app_usage.sql`), never sync.ts's client, so no
   session rides along. Only in a production build at `NEXT_PUBLIC_SITE_URL` (none yet: nothing is counted until it is
   set), and while 設定's 使われ方の数を送る (`kage:sendUsage`, on by default) is on.
