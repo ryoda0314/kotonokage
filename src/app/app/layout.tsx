@@ -2,6 +2,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { Logo } from "@/components/Logo";
 import { ja } from "@/lib/i18n/ja";
 import { ChunkHost } from "./_parts/ChunkHost";
+import { CountOpen } from "./_parts/CountOpen";
 import { SyncOnce } from "./_parts/SyncOnce";
 import styles from "./app.module.css";
 
@@ -13,6 +14,7 @@ export default function AppLayout({ children }: LayoutProps<"/app">) {
       </ChunkHost>
       <BottomNav labels={ja.nav} brand={<Logo size="sm" href="/" />} />
       <SyncOnce />
+      <CountOpen />
     </div>
   );
 }

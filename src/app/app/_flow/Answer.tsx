@@ -10,6 +10,7 @@ import { meVoiceName, meVoiceNow, SPEEDS } from "@/components/prefs";
 import { Sheet } from "@/components/Sheet";
 import { Speak } from "@/components/Speak";
 import speakStyles from "@/components/Speak.module.css";
+import { countUsage } from "@/components/usage";
 import { diffRanges } from "@/lib/diff";
 import { ja } from "@/lib/i18n/ja";
 import { addReply, addRole } from "@/lib/record";
@@ -301,6 +302,8 @@ function Own({ talk }: { talk: Talk }) {
     const own = findChunks(input);
     const ai = findChunks(result.fixed).filter((c) => !own.includes(c));
     commit((s) => addReply(s, { at: Date.now(), talk: talk.id, said: input, fixed: result.fixed, natural: result.natural, reply: result.reply, own, ai }));
+    // Counted once it is taken in (components/usage.ts), not when sent: one that did not arrive goes again.
+    countUsage("say");
     const voice = voiceOf(them);
     void playPending([
       ...(result.fixed ? [{ key: `fixed:${turns.length}`, url: saidUrl(result.fixed, result.sigFixed, meVoiceName()), text: result.fixed }] : []),

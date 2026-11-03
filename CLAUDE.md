@@ -23,6 +23,15 @@ no speed numbers, no streaks, no badges, no forced review, no pronunciation less
   built but hidden until `NEXT_PUBLIC_KOTONOAME_CONNECT=1`: ことのあめ sends its one-time token only to the sisters in
   its `src/lib/sisters.ts`, so it needs `kotonokage` there (with this app's public address) and deployed first. Google
   shows only with `NEXT_PUBLIC_GOOGLE_CLIENT_ID` and this app's origin among that client's authorized origins.
+- Usage counts, as ことのね's and every sister's (`src/components/usage.ts`; whether it counts here is pure in
+  `src/lib/usage.ts`, tested in `tests/usage.test.mjs`): this device's number (`kage:device`, a random one made here),
+  one count per `open` (once a page load, on reaching `/app`: `_parts/CountOpen.tsx`), `learn` (a talk's first time through the
+  whole of 追いかける, `Follow`'s `keepRound`: 聞く → 気づく → 追いかける gone to its end, which opens 返す) and `say` (a
+  返す（自分で） reply come back corrected, `Answer`'s `send`), and whether it was opened from the home screen; nothing
+  else (no account, name, email, voice or sentence). A plain fetch with the anon key to ことのあめ's `pl_app_ping`
+  (the kotono folder's `../polylinga/supabase/migrations/20261103000000_app_usage.sql`), never sync.ts's client, so no
+  session rides along. Only in a production build at `NEXT_PUBLIC_SITE_URL` (none yet: nothing is counted until it is
+  set), and while 設定's 使われ方の数を送る (`kage:sendUsage`, on by default) is on.
 - The prepared English is TypeScript data in `src/content/` (checked by `tests/content.test.mjs`); its audio is static
   MP3 in `public/audio`, named by key and a hash of voicing, voice, pace and text, listed with each clip's length and
   each subtitle word's time in `src/content/audio.json`.
@@ -72,7 +81,7 @@ no speed numbers, no streaks, no badges, no forced review, no pronunciation less
   with chunks, sounds and heard/missed words.
 - `_parts/ChunkHost.tsx`: one sheet for a chunk anywhere: what it does, itself slow or at pace, the talks it is in.
 - `/app/talks` 会話 (any talk can be taken up), `/app/me` 自分 (counts in one row, できたこと, まとまり by how far each
-  came, 日ごと), `/app/me/settings` 設定 (speed, わたしの声, without a voice, 訳, clear the record).
+  came, 日ごと), `/app/me/settings` 設定 (speed, わたしの声, without a voice, 訳, 使われ方の数を送る, clear the record).
 - `src/components/player.ts`: one `<audio>` element, pitch kept when slowed, clips fetched once into memory, parts of
   a clip by time, AI text through `/api/say`, the browser's voice when nothing else plays. `mic.ts`: the microphone
   kept open without stopping playback (echo cancellation on; earphones advised), `indexAt` maps the page's clock to

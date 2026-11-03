@@ -7,9 +7,10 @@ import { useChoice, usePref } from "@/components/local";
 import { hear, Mic, toWav16k } from "@/components/mic";
 import { lineItem, play, playList, stop, unlock } from "@/components/player";
 import { SPEEDS } from "@/components/prefs";
+import { countUsage } from "@/components/usage";
 import { ja } from "@/lib/i18n/ja";
-import { addRound, fullRounds, lastMissed, type State } from "@/lib/record";
-import { commit } from "@/lib/store";
+import { addRound, fullRounds, lastMissed, type Round, type State } from "@/lib/record";
+import { commit, getState } from "@/lib/store";
 import { heardWords, wordsOf } from "@/lib/text";
 import page from "../_parts/page.module.css";
 import styles from "./flow.module.css";
@@ -76,6 +77,14 @@ export function Follow({ talk, state, onNext }: { talk: Talk; state: State; onNe
     setLevel(0);
   }
 
+  // A time through the whole talk is kept. The first one (with a voice or without) means the talk has gone through
+  // 聞く → 気づく → 追いかける to its end, which opens 返す: that counts once in the usage counts (components/usage.ts).
+  function keepRound(round: Round) {
+    const first = fullRounds(getState().talks[talk.id]).length === 0;
+    commit((s) => addRound(s, talk.id, round));
+    if (first) countUsage("learn");
+  }
+
   async function round() {
     unlock();
     stop();
@@ -96,7 +105,7 @@ export function Follow({ talk, state, onNext }: { talk: Talk; state: State; onNe
     if (!ok) return setPhase("idle");
     const at = Date.now();
     if (!m) {
-      commit((s) => addRound(s, talk.id, { at, speed, quiet: true, missed: {} }));
+      keepRound({ at, speed, quiet: true, missed: {} });
       setSubs(null);
       return setPhase("idle");
     }
@@ -124,7 +133,7 @@ export function Follow({ talk, state, onNext }: { talk: Talk; state: State; onNe
     setTakes(next);
     setHeardText(h.text);
     setSubs(null);
-    commit((s) => addRound(s, talk.id, { at, speed, missed: Object.fromEntries(talk.lines.map((l, i) => [l.id, missedOf(perLine[i])])) }));
+    keepRound({ at, speed, missed: Object.fromEntries(talk.lines.map((l, i) => [l.id, missedOf(perLine[i])])) });
   }
 
   async function drill(i: number) {
